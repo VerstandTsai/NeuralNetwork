@@ -15,7 +15,7 @@ class Activation:
         return x
 
     def linear_derivative(self, x):
-        return 1
+        return np.ones(x.shape)
 
     def sigmoid(self, x):
         return 1 / (1 + np.exp(-x))
@@ -24,13 +24,13 @@ class Activation:
         return self.sigmoid(x) * (1 - self.sigmoid(x))
 
     def relu(self, x):
-        return np.array([a if a > 0 else 0 for a in x])
+        return np.maximum(x, 0)
 
     def relu_derivative(self, x):
-        return np.array([1 if a > 0 else 0 for a in x])
+        return np.array([[1] if a[0] > 0 else [0] for a in x])
 
     def tanh(self, x):
         return np.tanh(x)
 
     def tanh_derivative(self, x):
-        return 1 - np.power(np.tanh(x), 2)
+        return 1 - np.tanh(x)**2

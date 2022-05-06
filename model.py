@@ -19,15 +19,16 @@ class Model:
             self.layers[i].feed(self.layers[i-1].output)
 
     def backward(self, y):
-        dA = 2 * (self.layers[-1].output - y)
+        dA = self.layers[-1].output - y
         for i in range(-1, -len(self.layers), -1):
             dW = np.dot(self.layers[i-1].output, (self.layers[i].activation.prime(self.layers[i].value) * dA).T)
             dB = self.layers[i].activation.prime(self.layers[i].value) * dA
             dA = np.dot(self.layers[i].weights, self.layers[i].activation.prime(self.layers[i].value) * dA)
-            self.layers[i].weights -= dW
-            self.layers[i].biases -= dB
+            self.layers[i].weights -= self.learning_rate * dW
+            self.layers[i].biases -= self.learning_rate * dB
 
-    def fit(self, data_x, data_y, epochs):
+    def fit(self, data_x, data_y, learning_rate, epochs):
+        self.learning_rate = learning_rate
         for i in range(epochs):
             for j in range(len(data_x)):
                 self.forward(data_x[j])

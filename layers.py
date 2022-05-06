@@ -10,12 +10,12 @@ class Layer:
     def feed(self, x):
         pass
 
-class Input(Layer):
+class Flatten(Layer):
     def __init__(self, size):
-        super().__init__(size)
+        super().__init__(np.prod(size))
 
     def feed(self, x):
-        self.output = x
+        self.output = x.reshape(x.size, 1)
 
 class FullyConnected(Layer):
     def __init__(self, size, activation=Activation('linear')):
