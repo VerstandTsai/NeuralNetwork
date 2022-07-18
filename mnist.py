@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 if __name__ == '__main__':
-    load_size = 1000
+    load_size = 5000
     train_images_temp = LoadMNIST('mnist/train-images-idx3-ubyte', load_size)
     train_images = []
     for img in train_images_temp:
@@ -21,8 +21,8 @@ if __name__ == '__main__':
         nn.layers.FullyConnected(16, nn.Activation('sigmoid')),
         nn.layers.FullyConnected(10, nn.Activation('sigmoid')),
     ])
-    network.fit(train_images[:700], train_labels[:700], 1, 30)
+    network.fit(train_images[:4000], train_labels[:4000], 1, 5)
     rights = []
-    for i in range(500, load_size):
+    for i in range(1000, load_size):
         rights.append(1 if np.argmax(network.predict(train_images[i])) == train_labels_temp[i] else 0)
     print(f'Accuracy: {np.average(rights) * 100}%')
