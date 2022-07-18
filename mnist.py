@@ -23,6 +23,6 @@ if __name__ == '__main__':
     ])
     network.fit(train_images[:4000], train_labels[:4000], 1, 5)
     rights = []
-    for i in range(1000, load_size):
+    for i in range(4000, load_size):
         rights.append(1 if np.argmax(network.predict(train_images[i])) == train_labels_temp[i] else 0)
     print(f'Accuracy: {np.average(rights) * 100}%')
