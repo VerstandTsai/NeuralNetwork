@@ -21,13 +21,9 @@ class Model:
 
     def backward(self, y):
         self.loss = np.sum((self.layers[-1].output - y) ** 2)
-        dA = self.layers[-1].output - y
+        dError = self.layers[-1].output - y
         for i in range(-1, -len(self.layers), -1):
-            dB = self.layers[i].activation.prime(self.layers[i].value) * dA
-            dW = np.dot(self.layers[i-1].output, dB.T)
-            dA = np.dot(self.layers[i].weights, dB)
-            self.layers[i].weights -= self.learning_rate * dW
-            self.layers[i].biases -= self.learning_rate * dB
+            dError = self.layers[i].feedback(dError, self.learning_rate)
 
     def fit(self, data_x, data_y, learning_rate, epochs, plot_losses=False):
         self.learning_rate = learning_rate
