@@ -1,10 +1,11 @@
 import nn
 from mnist_loader import LoadMNIST
 import numpy as np
-import matplotlib.pyplot as plt
 
 if __name__ == '__main__':
     load_size = 5000
+    train_ratio = 0.8
+    train_size = int(load_size * train_ratio)
     train_images_temp = LoadMNIST('mnist/train-images-idx3-ubyte', load_size)
     train_images = []
     for img in train_images_temp:
@@ -21,8 +22,8 @@ if __name__ == '__main__':
         nn.layers.FullyConnected(16, nn.Activation('sigmoid')),
         nn.layers.FullyConnected(10, nn.Activation('sigmoid')),
     ])
-    network.fit(train_images[:4000], train_labels[:4000], 1, 5)
+    network.fit(train_images[:train_size], train_labels[:train_size], 1, 5, plot_losses=True)
     rights = []
-    for i in range(4000, load_size):
+    for i in range(train_size, load_size):
         rights.append(1 if np.argmax(network.predict(train_images[i])) == train_labels_temp[i] else 0)
     print(f'Accuracy: {np.average(rights) * 100}%')
